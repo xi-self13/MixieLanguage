@@ -1,0 +1,42 @@
+{
+  "scopeName": "source.mx",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#keywords" }
+  ],
+  "repository": {
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control",
+          "match": "\\b(fund|func|define|if|elif|el|wait|push|pull|return|def)\\b"
+        }
+      ]
+    },
+    "strings": {
+      "name": "string.quoted.double",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line",
+          "match": "\\^.*"
+        },
+        {
+          "name": "comment.block",
+          "begin": "\\^\\*\\*",
+          "end": "\\*\\*\\^"
+        }
+      ]
+    }
+  }
+}

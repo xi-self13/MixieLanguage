@@ -1,0 +1,48 @@
+{
+  "name": "mixielang",
+  "displayName": "MixieLang",
+  "description": "A language extension for MixieLang, a custom language.",
+  "version": "0.0.1",
+  "main": "./extension.js",
+  "engines": {
+    "vscode": "^1.89.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "mixie",
+        "aliases": [
+          "MixieLang",
+          "mixie"
+        ],
+        "extensions": [
+          ".mx",
+          ".mixie"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "mixie",
+        "scopeName": "source.mx",
+        "path": "./syntaxes/mixie.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "mixie",
+        "path": "./snippets/mixie.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "mixie.runFile",
+        "title": "Mixie: Run File"
+      }
+    ]
+  }
+}

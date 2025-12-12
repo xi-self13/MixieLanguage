@@ -1,0 +1,102 @@
+{
+  "Expert Function": {
+    "prefix": "fund",
+    "body": [
+      "fund ${1:funcName}(${2:attributes}) >: {",
+      "  $3",
+      "}: return ${4:what?};"
+    ],
+    "description": "Define a function (Expert Style)"
+  },
+  "Beginner Function": {
+    "prefix": "fundef",
+    "body": [
+      "fund def ${1:FuncName}(${2:attributes} : ${3:type}) >: {",
+      "  $4",
+      "} ret ${5:what?};"
+    ],
+    "description": "Define a function with explicit types (Beginner Style)"
+  },
+  "Code Block": {
+    "prefix": "@code",
+    "body": [
+      "@code:${1:name}",
+      "${2:content}",
+      "@end"
+    ],
+    "description": "Create a new code block."
+  },
+  "Image Block": {
+    "prefix": "@image",
+    "body": [
+      "@image:${1:name} ${2:encoding}",
+      "${3:content}",
+      "@end"
+    ],
+    "description": "Create a new image block."
+  },
+  "Audio Block": {
+    "prefix": "@audio",
+    "body": [
+      "@audio:${1:name} ${2:encoding}",
+      "${3:content}",
+      "@end"
+    ],
+    "description": "Create a new audio block."
+  },
+  "If/Elif/Else Statement": {
+    "prefix": "if",
+    "body": [
+      "if ${1:condition} >: {",
+      "  $2",
+      "} elif ${3:condition} >: {",
+      "  $4",
+      "} el >: {",
+      "  $5",
+      "}"
+    ],
+    "description": "If/Elif/Else conditional statement."
+  },
+  "Define Variable": {
+    "prefix": "define",
+    "body": [
+      "define ${1:variableName} >> ${2:value};"
+    ],
+    "description": "Define a variable."
+  },
+  "Push Value to Variable": {
+    "prefix": "push",
+    "body": [
+      "push ${1:value} >> ${2:variableName};"
+    ],
+    "description": "Push a value to a variable."
+  },
+  "Pull Block": {
+    "prefix": "pull",
+    "body": [
+      "pull @${1:type}:${2:name};"
+    ],
+    "description": "Pull a data block into the code."
+  },
+  "Wait": {
+    "prefix": "wait",
+    "body": [
+      "wait ${1:milliseconds};"
+    ],
+    "description": "Pause program execution."
+  },
+  "Print to Console": {
+    "prefix": "print",
+    "body": [
+      "push \"${1:message}\" >> Tab;"
+    ],
+    "description": "Print a message to the console."
+  },
+  "Return Statement": {
+    "prefix": "return",
+    "body": [
+      "return ${1:value};"
+    ],
+    "description": "Return a value from a function."
+  }
+}

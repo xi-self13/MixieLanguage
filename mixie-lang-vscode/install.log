@@ -1,0 +1,14 @@
+Attempting to package extension...
+ DONE  Packaged: /home/user/mixielang/mixie-lang-vscode/mixielang-0.0.1.vsix (8 files, 3.83KB)
+\nPackaging complete. Attempting to install...
+total 28
+-rw-r--r-- 1 user user 1391 Dec 12 17:37 extension.js
+-rw-r--r-- 1 user user  177 Dec 12 17:41 install.log
+-rw-r--r-- 1 user user  474 Dec 11 18:54 language-configuration.json
+-rw-r--r-- 1 user user 3918 Dec 12 17:41 mixielang-0.0.1.vsix
+-rw-r--r-- 1 user user  942 Dec 12 17:37 package.json
+drwxr-xr-x 2 user user 4096 Dec 12 17:23 snippets
+drwxr-xr-x 2 user user 4096 Dec 11 18:54 syntaxes
+Installing extensions on firebase-mixielang-1765464562546.cluster-l2bgochoazbomqgfmlhuvdvgiy.cloudworkstations.dev...
+Extension 'mixielang-0.0.1.vsix' was successfully installed.
+\nInstallation command executed.

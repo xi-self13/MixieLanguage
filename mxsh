@@ -1,0 +1,66 @@
+#!/bin/bash
+
+# Exit immediately if a command fails
+set -e
+
+# --- Argument Parsing ---
+FILENAME=""
+SILENT_MODE=false
+
+# Loop through all arguments
+while [[ $# -gt 0 ]]; do
+    key="$1"
+    case $key in
+        -f) # File flag
+        FILENAME="$2"
+        shift # past argument
+        shift # past value
+        ;;
+        -s) # Silent flag
+        SILENT_MODE=true
+        shift # past argument
+        ;;
+        *)
+        echo "Unknown option: $1"
+        echo "Usage: ./mxsh -f <filename.mx> [-s]"
+        exit 1
+        ;;
+    esac
+done
+
+# Check if a filename was provided
+if [ -z "$FILENAME" ]; then
+    echo "Usage: ./mxsh -f <filename.mx> [-s]"
+    exit 1
+fi
+
+# Check if the file actually exists
+if [ ! -f "$FILENAME" ]; then
+    echo "Error: File not found: $FILENAME"
+    exit 1
+fi
+
+# --- Compilation & Execution ---
+
+# Build the interpreter.
+# We'll hide the build output if silent mode is on.
+if [ "$SILENT_MODE" = true ] ; then
+    .idx/scripts/compile-interpreter.sh > /dev/null 2>&1
+else
+    echo "--- Building interpreter ---"
+    .idx/scripts/compile-interpreter.sh
+fi
+
+# Execute the interpreter
+if [ "$SILENT_MODE" = true ] ; then
+    # In silent mode, only show the program's actual output (stdout)
+    # Hide any of the interpreter's own logs (stderr)
+    .bin/mixie-interpreter < "$FILENAME" 2> /dev/null
+else
+    echo "--- Running program: $FILENAME ---"
+    .bin/mixie-interpreter < "$FILENAME"
+fi
+
+if [ "$SILENT_MODE" = false ] ; then
+    echo "--- Program finished ---"
+fi
