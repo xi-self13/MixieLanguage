@@ -35,8 +35,8 @@
    especially those whose name start with YY_ or yy_.  They are
    private implementation details that can be changed or removed.  */
 
-#ifndef YY_YY_PARSER_TAB_H_INCLUDED
-# define YY_YY_PARSER_TAB_H_INCLUDED
+#ifndef YY_YY_INTERPRETER_PROJET_PARSER_TAB_H_INCLUDED
+# define YY_YY_INTERPRETER_PROJET_PARSER_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -69,21 +69,25 @@ extern int yydebug;
     T_RETURN = 270,                /* T_RETURN  */
     T_DEF = 271,                   /* T_DEF  */
     T_PRINT = 272,                 /* T_PRINT  */
-    T_EQ = 273,                    /* T_EQ  */
-    T_NEQ = 274,                   /* T_NEQ  */
-    T_GT = 275,                    /* T_GT  */
-    T_LT = 276,                    /* T_LT  */
-    T_GTE = 277,                   /* T_GTE  */
-    T_LTE = 278,                   /* T_LTE  */
-    T_ASSIGN = 279,                /* T_ASSIGN  */
-    T_COLON = 280,                 /* T_COLON  */
-    T_SEMICOLON = 281,             /* T_SEMICOLON  */
-    T_GT_COLON = 282,              /* T_GT_COLON  */
-    T_SLASH_COLON = 283,           /* T_SLASH_COLON  */
-    T_LBRACE = 284,                /* T_LBRACE  */
-    T_RBRACE = 285,                /* T_RBRACE  */
-    T_LPAREN = 286,                /* T_LPAREN  */
-    T_RPAREN = 287                 /* T_RPAREN  */
+    T_PIXIE = 273,                 /* T_PIXIE  */
+    T_OUT = 274,                   /* T_OUT  */
+    T_ARROW = 275,                 /* T_ARROW  */
+    T_COLON_GT = 276,              /* T_COLON_GT  */
+    T_EQ = 277,                    /* T_EQ  */
+    T_NEQ = 278,                   /* T_NEQ  */
+    T_GT = 279,                    /* T_GT  */
+    T_LT = 280,                    /* T_LT  */
+    T_GTE = 281,                   /* T_GTE  */
+    T_LTE = 282,                   /* T_LTE  */
+    T_ASSIGN = 283,                /* T_ASSIGN  */
+    T_COLON = 284,                 /* T_COLON  */
+    T_SEMICOLON = 285,             /* T_SEMICOLON  */
+    T_GT_COLON = 286,              /* T_GT_COLON  */
+    T_SLASH_COLON = 287,           /* T_SLASH_COLON  */
+    T_LBRACE = 288,                /* T_LBRACE  */
+    T_RBRACE = 289,                /* T_RBRACE  */
+    T_LPAREN = 290,                /* T_LPAREN  */
+    T_RPAREN = 291                 /* T_RPAREN  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -92,13 +96,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 23 "parser.y"
+#line 23 "interpreter_projet/parser.y"
 
     char *sval;
     int ival;
     float fval;
 
-#line 102 "parser.tab.h"
+#line 106 "interpreter_projet/parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -113,4 +117,4 @@ extern YYSTYPE yylval;
 int yyparse (void);
 
 
-#endif /* !YY_YY_PARSER_TAB_H_INCLUDED  */
+#endif /* !YY_YY_INTERPRETER_PROJET_PARSER_TAB_H_INCLUDED  */

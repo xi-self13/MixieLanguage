@@ -33,6 +33,7 @@ char* unquote(char* s) {
 
 // Language keywords
 %token T_FUNC T_DEFINE T_IF T_ELIF T_EL T_WAIT T_PUSH T_PULL T_RETURN T_DEF T_PRINT
+%token T_PIXIE T_OUT T_ARROW T_COLON_GT
 
 // Operators and symbols
 %token T_EQ T_NEQ T_GT T_LT T_GTE T_LTE T_ASSIGN
@@ -59,6 +60,12 @@ statement:
     | variable_definition T_SEMICOLON
     | variable_assignment T_SEMICOLON { fprintf(stderr, "--- Parsed a variable assignment for '%s'.\n", $1); }
     | print_statement
+    | package_definition
+    ;
+
+package_definition:
+    T_PIXIE T_ARROW T_IDENTIFIER T_COLON_GT T_LBRACE statements T_RBRACE T_PUSH T_OUT T_IDENTIFIER T_SEMICOLON
+    { fprintf(stderr, "--- Parsed package '%s'.\n", $3); }
     ;
 
 print_statement:

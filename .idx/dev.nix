@@ -8,26 +8,16 @@
     pkgs.bison
     pkgs.flex
     pkgs.gcc
-    pkgs.vsce # The official extension packaging tool
-    pkgs.bash # Shell for running scripts
+    pkgs.pkg-config  # Add pkg-config to the list of packages
+    pkgs.vsce  # The official extension packaging tool
+    pkgs.bash  # Shell for running scripts
   ];
 
   idx = {
     # We only list pre-built extensions from the marketplace here.
     # Our custom extension will be installed via the onStart hook.
     extensions = [
-      "ms-vscode.cpptools" # C/C++ language support
+      # Add any pre-built extensions here
     ];
-
-    workspace = {
-      # This hook runs every time the workspace starts.
-      onStart = {
-        # This command compiles the C source files for the interpreter.
-        compile-interpreter = ". ./.idx/scripts/compile-interpreter.sh";
-
-        # This script packages and installs the local MixieLang extension.
-        install-mixie-extension = ". ./.idx/scripts/install-extension.sh";
-      };
-    };
   };
 }

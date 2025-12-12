@@ -1,0 +1,3 @@
+pixie -> MyPackage :> {
+    print "Hello from MyPackage!";
+} push out MyPackage;

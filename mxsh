@@ -45,20 +45,20 @@ fi
 # Build the interpreter.
 # We'll hide the build output if silent mode is on.
 if [ "$SILENT_MODE" = true ] ; then
-    .idx/scripts/compile-interpreter.sh > /dev/null 2>&1
+    scripts/compile-interpreter.sh > /dev/null 2>&1
 else
     echo "--- Building interpreter ---"
-    .idx/scripts/compile-interpreter.sh
+    scripts/compile-interpreter.sh
 fi
 
 # Execute the interpreter
 if [ "$SILENT_MODE" = true ] ; then
     # In silent mode, only show the program's actual output (stdout)
     # Hide any of the interpreter's own logs (stderr)
-    .bin/mixie-interpreter < "$FILENAME" 2> /dev/null
+    bin/mixie-interpreter < "$FILENAME" 2> /dev/null
 else
     echo "--- Running program: $FILENAME ---"
-    .bin/mixie-interpreter < "$FILENAME"
+    bin/mixie-interpreter < "$FILENAME"
 fi
 
 if [ "$SILENT_MODE" = false ] ; then

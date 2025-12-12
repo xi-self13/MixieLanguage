@@ -10,6 +10,11 @@ DIGIT   [0-9]
 
 %%
 
+"pixie"           { return T_PIXIE; }
+"out"             { return T_OUT; }
+"->"              { return T_ARROW; }
+":>"              { return T_COLON_GT; }
+
 "fund"            { return T_FUNC; }
 "define"          { return T_DEFINE; }
 "if"              { return T_IF; }
