@@ -61,11 +61,27 @@ statement:
     | variable_assignment T_SEMICOLON { fprintf(stderr, "--- Parsed a variable assignment for '%s'.\n", $1); }
     | print_statement
     | package_definition
+    | pull_statement
+    ;
+
+pull_statement:
+    T_PULL T_IDENTIFIER T_SEMICOLON { fprintf(stderr, "--- Pulled package '%s'.\n", $2); }
     ;
 
 package_definition:
     T_PIXIE T_ARROW T_IDENTIFIER T_COLON_GT T_LBRACE statements T_RBRACE T_PUSH T_OUT T_IDENTIFIER T_SEMICOLON
-    { fprintf(stderr, "--- Parsed package '%s'.\n", $3); }
+    {
+        fprintf(stderr, "--- Creating package file for '%s'.\n", $10);
+        char* filename = strcat(strdup($10), ".mxp");
+        FILE *fp = fopen(filename, "w");
+        if (fp != NULL) {
+            fprintf(fp, "// Package '%s'\n", $10);
+            fclose(fp);
+            fprintf(stderr, "--- Package '%s' pushed out to %s\n", $10, filename);
+        } else {
+            fprintf(stderr, "--- Error creating package file for '%s'\n", $10);
+        }
+    }
     ;
 
 print_statement:
