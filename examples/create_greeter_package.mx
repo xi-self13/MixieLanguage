@@ -1,0 +1,3 @@
+pixie -> Greeter :> {
+    print "Hello from the Greeter package!";
+} push out Greeter;

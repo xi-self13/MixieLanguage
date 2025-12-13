@@ -11,6 +11,7 @@ DIGIT   [0-9]
 %%
 
 "pixie"           { return T_PIXIE; }
+"pixpix"          { return T_PIXPIX; }
 "out"             { return T_OUT; }
 "->"              { return T_ARROW; }
 ":>"              { return T_COLON_GT; }
@@ -27,6 +28,7 @@ DIGIT   [0-9]
 "return"          { return T_RETURN; }
 "def"             { return T_DEF; }
 
+"/>"              { return T_SLASH_GT; }
 ">>"              { return T_EQ; }
 "!>>"             { return T_NEQ; }
 ">="              { return T_GTE; }
@@ -44,6 +46,7 @@ DIGIT   [0-9]
 ")"               { return T_RPAREN; }
 ":"               { return T_COLON; }
 ";"               { return T_SEMICOLON; }
+","               { return T_COMMA; }
 
 {ID}              { yylval.sval = strdup(yytext); return T_IDENTIFIER; }
 {DIGIT}+          { yylval.ival = atoi(yytext); return T_INTEGER; }
@@ -52,6 +55,7 @@ DIGIT   [0-9]
 
 [ \t\r\n]+          { /* Skip whitespace */ }
 "^"[^\n]*         { /* Skip comments */ }
+"//"[^\n]*        { /* Skip C-style comments */ }
 
 .                 { printf("Unexpected character: %c\n", *yytext); }
 
