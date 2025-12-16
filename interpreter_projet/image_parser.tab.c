@@ -63,58 +63,28 @@
 /* Pull parsers.  */
 #define YYPULL 1
 
-
-
+/* Substitute the type names.  */
+#define YYSTYPE         YYIMAGESTYPE
+/* Substitute the variable and function names.  */
+#define yyparse         yyimageparse
+#define yylex           yyimagelex
+#define yyerror         yyimageerror
+#define yydebug         yyimagedebug
+#define yynerrs         yyimagenerrs
+#define yylval          yyimagelval
+#define yychar          yyimagechar
 
 /* First part of user prologue.  */
-#line 1 "interpreter_projet/parser.y"
+#line 1 "interpreter_projet/image_parser.y"
 
 #include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 
 // Forward declarations
-int yylex(void);
-void yyerror(const char *s);
-extern int yy_scan_string(const char*);
-
-// Simple in-memory data store for blocks
-#define MAX_BLOCKS 100
-char* block_names[MAX_BLOCKS];
-char* block_contents[MAX_BLOCKS];
-int block_count = 0;
-
-void store_block(char* name, char* content) {
-    if (block_count < MAX_BLOCKS) {
-        block_names[block_count] = strdup(name);
-        block_contents[block_count] = strdup(content);
-        block_count++;
-    }
-}
-
-char* retrieve_block(char* name) {
-    for (int i = 0; i < block_count; i++) {
-        if (strcmp(block_names[i], name) == 0) {
-            return block_contents[i];
-        }
-    }
-    return NULL;
-}
-
-// Helper function to unquote strings
-char* unquote(char* s) {
-    if (s && s[0] == '\"') {
-        s++;
-        size_t len = strlen(s);
-        if (len > 0 && s[len-1] == '\"') {
-            s[len-1] = '\0';
-        }
-    }
-    return s;
-}
+int yyimagelex(void);
+void yyimageerror(const char *s);
 
 
-#line 118 "interpreter_projet/parser.tab.c"
+#line 88 "interpreter_projet/image_parser.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -137,7 +107,7 @@ char* unquote(char* s) {
 #  endif
 # endif
 
-#include "parser.tab.h"
+#include "image_parser.tab.h"
 /* Symbol kind.  */
 enum yysymbol_kind_t
 {
@@ -145,62 +115,15 @@ enum yysymbol_kind_t
   YYSYMBOL_YYEOF = 0,                      /* "end of file"  */
   YYSYMBOL_YYerror = 1,                    /* error  */
   YYSYMBOL_YYUNDEF = 2,                    /* "invalid token"  */
-  YYSYMBOL_T_IDENTIFIER = 3,               /* T_IDENTIFIER  */
-  YYSYMBOL_T_STRING = 4,                   /* T_STRING  */
-  YYSYMBOL_T_CONTENT = 5,                  /* T_CONTENT  */
-  YYSYMBOL_T_INTEGER = 6,                  /* T_INTEGER  */
-  YYSYMBOL_T_FLOAT = 7,                    /* T_FLOAT  */
-  YYSYMBOL_T_FUNC = 8,                     /* T_FUNC  */
-  YYSYMBOL_T_DEFINE = 9,                   /* T_DEFINE  */
-  YYSYMBOL_T_IF = 10,                      /* T_IF  */
-  YYSYMBOL_T_ELIF = 11,                    /* T_ELIF  */
-  YYSYMBOL_T_EL = 12,                      /* T_EL  */
-  YYSYMBOL_T_WAIT = 13,                    /* T_WAIT  */
-  YYSYMBOL_T_PUSH = 14,                    /* T_PUSH  */
-  YYSYMBOL_T_PULL = 15,                    /* T_PULL  */
-  YYSYMBOL_T_RETURN = 16,                  /* T_RETURN  */
-  YYSYMBOL_T_DEF = 17,                     /* T_DEF  */
-  YYSYMBOL_T_PRINT = 18,                   /* T_PRINT  */
-  YYSYMBOL_T_PIXIE = 19,                   /* T_PIXIE  */
-  YYSYMBOL_T_PIXPIX = 20,                  /* T_PIXPIX  */
-  YYSYMBOL_T_OUT = 21,                     /* T_OUT  */
-  YYSYMBOL_T_ARROW = 22,                   /* T_ARROW  */
-  YYSYMBOL_T_COLON_GT = 23,                /* T_COLON_GT  */
-  YYSYMBOL_T_SLASH_GT = 24,                /* T_SLASH_GT  */
-  YYSYMBOL_T_AT = 25,                      /* T_AT  */
-  YYSYMBOL_T_END = 26,                     /* T_END  */
-  YYSYMBOL_T_EQ = 27,                      /* T_EQ  */
-  YYSYMBOL_T_NEQ = 28,                     /* T_NEQ  */
-  YYSYMBOL_T_GT = 29,                      /* T_GT  */
-  YYSYMBOL_T_LT = 30,                      /* T_LT  */
-  YYSYMBOL_T_GTE = 31,                     /* T_GTE  */
-  YYSYMBOL_T_LTE = 32,                     /* T_LTE  */
-  YYSYMBOL_T_ASSIGN = 33,                  /* T_ASSIGN  */
-  YYSYMBOL_T_COLON = 34,                   /* T_COLON  */
-  YYSYMBOL_T_SEMICOLON = 35,               /* T_SEMICOLON  */
-  YYSYMBOL_T_GT_COLON = 36,                /* T_GT_COLON  */
-  YYSYMBOL_T_SLASH_COLON = 37,             /* T_SLASH_COLON  */
-  YYSYMBOL_T_LBRACE = 38,                  /* T_LBRACE  */
-  YYSYMBOL_T_RBRACE = 39,                  /* T_RBRACE  */
-  YYSYMBOL_T_LPAREN = 40,                  /* T_LPAREN  */
-  YYSYMBOL_T_RPAREN = 41,                  /* T_RPAREN  */
-  YYSYMBOL_T_COMMA = 42,                   /* T_COMMA  */
-  YYSYMBOL_YYACCEPT = 43,                  /* $accept  */
-  YYSYMBOL_program = 44,                   /* program  */
-  YYSYMBOL_blocks = 45,                    /* blocks  */
-  YYSYMBOL_block = 46,                     /* block  */
-  YYSYMBOL_statements = 47,                /* statements  */
-  YYSYMBOL_statement = 48,                 /* statement  */
-  YYSYMBOL_pull_statement = 49,            /* pull_statement  */
-  YYSYMBOL_package_definition = 50,        /* package_definition  */
-  YYSYMBOL_package_body = 51,              /* package_body  */
-  YYSYMBOL_package_statements = 52,        /* package_statements  */
-  YYSYMBOL_package_statement = 53,         /* package_statement  */
-  YYSYMBOL_pixpix_definition = 54,         /* pixpix_definition  */
-  YYSYMBOL_function_body = 55,             /* function_body  */
-  YYSYMBOL_inner_statements = 56,          /* inner_statements  */
-  YYSYMBOL_inner_statement = 57,           /* inner_statement  */
-  YYSYMBOL_print_statement = 58            /* print_statement  */
+  YYSYMBOL_T_IMAGE_START = 3,              /* T_IMAGE_START  */
+  YYSYMBOL_T_IMAGE_END = 4,                /* T_IMAGE_END  */
+  YYSYMBOL_T_STRUCTURE = 5,                /* T_STRUCTURE  */
+  YYSYMBOL_T_LPAREN = 6,                   /* T_LPAREN  */
+  YYSYMBOL_T_RPAREN = 7,                   /* T_RPAREN  */
+  YYSYMBOL_YYACCEPT = 8,                   /* $accept  */
+  YYSYMBOL_image_file = 9,                 /* image_file  */
+  YYSYMBOL_image_content = 10,             /* image_content  */
+  YYSYMBOL_image_statement = 11            /* image_statement  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -467,7 +390,7 @@ void free (void *); /* INFRINGES ON USER NAME SPACE */
 
 #if (! defined yyoverflow \
      && (! defined __cplusplus \
-         || (defined YYSTYPE_IS_TRIVIAL && YYSTYPE_IS_TRIVIAL)))
+         || (defined YYIMAGESTYPE_IS_TRIVIAL && YYIMAGESTYPE_IS_TRIVIAL)))
 
 /* A type that is properly aligned for any stack member.  */
 union yyalloc
@@ -526,21 +449,21 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  3
+#define YYFINAL  4
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   46
+#define YYLAST   7
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  43
+#define YYNTOKENS  8
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  16
+#define YYNNTS  4
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  26
+#define YYNRULES  5
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  56
+#define YYNSTATES  10
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   297
+#define YYMAXUTOK   262
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -580,26 +503,21 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
-      25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36,    37,    38,    39,    40,    41,    42
+       5,     6,     7
 };
 
-#if YYDEBUG
+#if YYIMAGEDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_uint8 yyrline[] =
+static const yytype_int8 yyrline[] =
 {
-       0,    76,    76,    79,    81,    85,    90,    95,    98,   100,
-     104,   105,   106,   110,   122,   138,   140,   144,   145,   149,
-     153,   159,   161,   165,   166,   170,   174
+       0,    19,    19,    25,    27,    31
 };
 #endif
 
 /** Accessing symbol of state STATE.  */
 #define YY_ACCESSING_SYMBOL(State) YY_CAST (yysymbol_kind_t, yystos[State])
 
-#if YYDEBUG || 0
+#if YYIMAGEDEBUG || 0
 /* The user-facing name of the symbol whose (internal) number is
    YYSYMBOL.  No bounds checking.  */
 static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
@@ -608,18 +526,9 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "\"end of file\"", "error", "\"invalid token\"", "T_IDENTIFIER",
-  "T_STRING", "T_CONTENT", "T_INTEGER", "T_FLOAT", "T_FUNC", "T_DEFINE",
-  "T_IF", "T_ELIF", "T_EL", "T_WAIT", "T_PUSH", "T_PULL", "T_RETURN",
-  "T_DEF", "T_PRINT", "T_PIXIE", "T_PIXPIX", "T_OUT", "T_ARROW",
-  "T_COLON_GT", "T_SLASH_GT", "T_AT", "T_END", "T_EQ", "T_NEQ", "T_GT",
-  "T_LT", "T_GTE", "T_LTE", "T_ASSIGN", "T_COLON", "T_SEMICOLON",
-  "T_GT_COLON", "T_SLASH_COLON", "T_LBRACE", "T_RBRACE", "T_LPAREN",
-  "T_RPAREN", "T_COMMA", "$accept", "program", "blocks", "block",
-  "statements", "statement", "pull_statement", "package_definition",
-  "package_body", "package_statements", "package_statement",
-  "pixpix_definition", "function_body", "inner_statements",
-  "inner_statement", "print_statement", YY_NULLPTR
+  "\"end of file\"", "error", "\"invalid token\"", "T_IMAGE_START",
+  "T_IMAGE_END", "T_STRUCTURE", "T_LPAREN", "T_RPAREN", "$accept",
+  "image_file", "image_content", "image_statement", YY_NULLPTR
 };
 
 static const char *
@@ -629,12 +538,12 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-28)
+#define YYPACT_NINF (-5)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
 
-#define YYTABLE_NINF (-3)
+#define YYTABLE_NINF (-1)
 
 #define yytable_value_is_error(Yyn) \
   0
@@ -643,12 +552,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-     -28,     3,     0,   -28,     1,   -28,   -13,   -27,   -17,     5,
-     -12,   -28,   -24,   -28,   -23,    10,    11,   -28,    12,   -28,
-     -28,    -4,   -18,    -6,    -8,   -28,    16,   -15,   -28,   -28,
-       4,    -9,   -11,     4,   -28,   -28,    18,    13,   -28,   -14,
-       8,    -3,    27,    29,    -2,    -7,   -28,    14,    -1,    17,
-       2,    17,   -28,   -28,   -28,   -28
+      -1,    -5,     3,    -4,    -5,    -5,    -2,    -5,     0,    -5
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -656,26 +560,19 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       3,     0,     8,     1,     0,     4,     7,     0,     0,     0,
-       0,     9,     0,    10,     0,     0,     0,    26,     0,    12,
-      11,     0,     0,     0,     0,     6,     0,     0,     5,    13,
-      15,     0,     0,    16,    17,    19,     0,     0,    18,     0,
-       0,     0,     0,     0,     0,     0,    14,     0,     0,    21,
-       0,    22,    23,    25,    20,    24
+       0,     3,     0,     0,     1,     2,     0,     4,     0,     5
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -28,   -28,   -28,   -28,   -28,   -28,   -28,   -28,   -28,   -28,
-       6,   -28,   -28,   -28,    -5,    30
+      -5,    -5,    -5,    -5
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     1,     2,     5,     6,    11,    12,    13,    32,    33,
-      34,    35,    50,    51,    52,    53
+       0,     2,     3,     7
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -683,55 +580,38 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      -2,    24,     8,     3,     7,     9,    10,    15,    16,    17,
-      18,    19,    20,    21,    22,    23,    26,    27,    28,    29,
-      36,    39,    25,    30,    31,     4,    41,    40,    37,    42,
-      44,    43,    45,    46,    47,     9,    14,    49,    48,    38,
-       0,    54,     0,     0,     0,     0,    55
+       5,     6,     1,     4,     8,     0,     0,     9
 };
 
 static const yytype_int8 yycheck[] =
 {
-       0,     5,    15,     0,     3,    18,    19,    34,    25,     4,
-      22,    35,    35,     3,     3,     3,    34,    23,    26,     3,
-      29,     3,    26,    38,    20,    25,    40,    14,    39,    21,
-       3,    34,     3,    35,    41,    18,     6,    38,    24,    33,
-      -1,    39,    -1,    -1,    -1,    -1,    51
+       4,     5,     3,     0,     6,    -1,    -1,     7
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    44,    45,     0,    25,    46,    47,     3,    15,    18,
-      19,    48,    49,    50,    58,    34,    25,     4,    22,    35,
-      35,     3,     3,     3,     5,    26,    34,    23,    26,     3,
-      38,    20,    51,    52,    53,    54,    29,    39,    53,     3,
-      14,    40,    21,    34,     3,     3,    35,    41,    24,    38,
-      55,    56,    57,    58,    39,    57
+       0,     3,     9,    10,     0,     4,     5,    11,     6,     7
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    43,    44,    45,    45,    46,    46,    46,    47,    47,
-      48,    48,    48,    49,    50,    51,    51,    52,    52,    53,
-      54,    55,    55,    56,    56,    57,    58
+       0,     8,     9,    10,    10,    11
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     1,     0,     2,     6,     5,     1,     0,     2,
-       1,     2,     2,     5,    11,     0,     1,     1,     2,     1,
-      11,     0,     1,     1,     2,     1,     2
+       0,     2,     3,     0,     2,     3
 };
 
 
 enum { YYENOMEM = -2 };
 
 #define yyerrok         (yyerrstatus = 0)
-#define yyclearin       (yychar = YYEMPTY)
+#define yyclearin       (yychar = YYIMAGEEMPTY)
 
 #define YYACCEPT        goto yyacceptlab
 #define YYABORT         goto yyabortlab
@@ -743,7 +623,7 @@ enum { YYENOMEM = -2 };
 
 #define YYBACKUP(Token, Value)                                    \
   do                                                              \
-    if (yychar == YYEMPTY)                                        \
+    if (yychar == YYIMAGEEMPTY)                                        \
       {                                                           \
         yychar = (Token);                                         \
         yylval = (Value);                                         \
@@ -759,12 +639,12 @@ enum { YYENOMEM = -2 };
   while (0)
 
 /* Backward compatibility with an undocumented macro.
-   Use YYerror or YYUNDEF. */
-#define YYERRCODE YYUNDEF
+   Use YYIMAGEerror or YYIMAGEUNDEF. */
+#define YYERRCODE YYIMAGEUNDEF
 
 
 /* Enable debugging if requested.  */
-#if YYDEBUG
+#if YYIMAGEDEBUG
 
 # ifndef YYFPRINTF
 #  include <stdio.h> /* INFRINGES ON USER NAME SPACE */
@@ -882,12 +762,12 @@ do {                                    \
 /* Nonzero means print parse trace.  It is left uninitialized so that
    multiple parsers can coexist.  */
 int yydebug;
-#else /* !YYDEBUG */
+#else /* !YYIMAGEDEBUG */
 # define YYDPRINTF(Args) ((void) 0)
 # define YY_SYMBOL_PRINT(Title, Kind, Value, Location)
 # define YY_STACK_PRINT(Bottom, Top)
 # define YY_REDUCE_PRINT(Rule)
-#endif /* !YYDEBUG */
+#endif /* !YYIMAGEDEBUG */
 
 
 /* YYINITDEPTH -- initial size of the parser's stacks.  */
@@ -987,7 +867,7 @@ yyparse (void)
 
   YYDPRINTF ((stderr, "Starting parse\n"));
 
-  yychar = YYEMPTY; /* Cause a token to be read.  */
+  yychar = YYIMAGEEMPTY; /* Cause a token to be read.  */
 
   goto yysetstate;
 
@@ -1097,25 +977,25 @@ yybackup:
   /* Not known => get a lookahead token if don't already have one.  */
 
   /* YYCHAR is either empty, or end-of-input, or a valid lookahead.  */
-  if (yychar == YYEMPTY)
+  if (yychar == YYIMAGEEMPTY)
     {
       YYDPRINTF ((stderr, "Reading a token\n"));
       yychar = yylex ();
     }
 
-  if (yychar <= YYEOF)
+  if (yychar <= YYIMAGEEOF)
     {
-      yychar = YYEOF;
+      yychar = YYIMAGEEOF;
       yytoken = YYSYMBOL_YYEOF;
       YYDPRINTF ((stderr, "Now at end of input.\n"));
     }
-  else if (yychar == YYerror)
+  else if (yychar == YYIMAGEerror)
     {
       /* The scanner already issued an error message, process directly
          to error recovery.  But do not keep the error token as
          lookahead, it is too special and may lead us to an endless
          loop in error recovery. */
-      yychar = YYUNDEF;
+      yychar = YYIMAGEUNDEF;
       yytoken = YYSYMBOL_YYerror;
       goto yyerrlab1;
     }
@@ -1152,7 +1032,7 @@ yybackup:
   YY_IGNORE_MAYBE_UNINITIALIZED_END
 
   /* Discard the shifted token.  */
-  yychar = YYEMPTY;
+  yychar = YYIMAGEEMPTY;
   goto yynewstate;
 
 
@@ -1187,73 +1067,24 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 5: /* block: T_AT T_IDENTIFIER T_COLON T_IDENTIFIER T_CONTENT T_END  */
-#line 86 "interpreter_projet/parser.y"
+  case 2: /* image_file: T_IMAGE_START image_content T_IMAGE_END  */
+#line 20 "interpreter_projet/image_parser.y"
     {
-        store_block((yyvsp[-2].sval), (yyvsp[-1].sval));
-        fprintf(stderr, "--- Stored block: %s\n", (yyvsp[-2].sval));
+        printf("--- Successfully parsed .mxpg file ---\n");
     }
-#line 1197 "interpreter_projet/parser.tab.c"
+#line 1076 "interpreter_projet/image_parser.tab.c"
     break;
 
-  case 6: /* block: T_AT T_IDENTIFIER T_COLON T_IDENTIFIER T_END  */
-#line 91 "interpreter_projet/parser.y"
+  case 5: /* image_statement: T_STRUCTURE T_LPAREN T_RPAREN  */
+#line 32 "interpreter_projet/image_parser.y"
     {
-        store_block((yyvsp[-1].sval), "");
-        fprintf(stderr, "--- Stored empty block: %s\n", (yyvsp[-1].sval));
+        printf("--- Parsed image structure ---\n");
     }
-#line 1206 "interpreter_projet/parser.tab.c"
-    break;
-
-  case 13: /* pull_statement: T_PULL T_AT T_IDENTIFIER T_COLON T_IDENTIFIER  */
-#line 111 "interpreter_projet/parser.y"
-    {
-        char* content = retrieve_block((yyvsp[0].sval));
-        if (content != NULL) {
-            printf("%s\n", content);
-        } else {
-            fprintf(stderr, "--- Error pulling block '%s': Not found.\n", (yyvsp[0].sval));
-        }
-    }
-#line 1219 "interpreter_projet/parser.tab.c"
-    break;
-
-  case 14: /* package_definition: T_PIXIE T_ARROW T_IDENTIFIER T_COLON_GT T_LBRACE package_body T_RBRACE T_PUSH T_OUT T_IDENTIFIER T_SEMICOLON  */
-#line 123 "interpreter_projet/parser.y"
-    {
-        fprintf(stderr, "--- Creating package file for '%s'.\n", (yyvsp[-1].sval));
-        char* filename = strcat(strdup((yyvsp[-1].sval)), ".mxp");
-        FILE *fp = fopen(filename, "w");
-        if (fp != NULL) {
-            fprintf(fp, "// Package '%s' created by the Mixie compiler\n", (yyvsp[-1].sval));
-            // TODO: Write package_body content to file
-            fclose(fp);
-            fprintf(stderr, "--- Package '%s' pushed out to %s\n", (yyvsp[-1].sval), filename);
-        } else {
-            fprintf(stderr, "--- Error creating package file for '%s'\n", (yyvsp[-1].sval));
-        }
-    }
-#line 1237 "interpreter_projet/parser.tab.c"
-    break;
-
-  case 20: /* pixpix_definition: T_PIXPIX T_GT T_IDENTIFIER T_LPAREN T_COLON T_IDENTIFIER T_RPAREN T_SLASH_GT T_LBRACE function_body T_RBRACE  */
-#line 154 "interpreter_projet/parser.y"
-    {
-        fprintf(stderr, "--- Parsed pixpix function '%s'.\n", (yyvsp[-8].sval));
-    }
-#line 1245 "interpreter_projet/parser.tab.c"
-    break;
-
-  case 26: /* print_statement: T_PRINT T_STRING  */
-#line 175 "interpreter_projet/parser.y"
-    {
-        printf("%s\n", unquote((yyvsp[0].sval)));
-    }
-#line 1253 "interpreter_projet/parser.tab.c"
+#line 1084 "interpreter_projet/image_parser.tab.c"
     break;
 
 
-#line 1257 "interpreter_projet/parser.tab.c"
+#line 1088 "interpreter_projet/image_parser.tab.c"
 
       default: break;
     }
@@ -1295,7 +1126,7 @@ yyreduce:
 yyerrlab:
   /* Make sure we have latest lookahead translation.  See comments at
      user semantic actions for why this is necessary.  */
-  yytoken = yychar == YYEMPTY ? YYSYMBOL_YYEMPTY : YYTRANSLATE (yychar);
+  yytoken = yychar == YYIMAGEEMPTY ? YYSYMBOL_YYEMPTY : YYTRANSLATE (yychar);
   /* If not already recovering from an error, report this error.  */
   if (!yyerrstatus)
     {
@@ -1308,17 +1139,17 @@ yyerrlab:
       /* If just tried and failed to reuse lookahead token after an
          error, discard it.  */
 
-      if (yychar <= YYEOF)
+      if (yychar <= YYIMAGEEOF)
         {
           /* Return failure if at end of input.  */
-          if (yychar == YYEOF)
+          if (yychar == YYIMAGEEOF)
             YYABORT;
         }
       else
         {
           yydestruct ("Error: discarding",
                       yytoken, &yylval);
-          yychar = YYEMPTY;
+          yychar = YYIMAGEEMPTY;
         }
     }
 
@@ -1420,7 +1251,7 @@ yyexhaustedlab:
 | yyreturnlab -- parsing is finished, clean up and return.  |
 `----------------------------------------------------------*/
 yyreturnlab:
-  if (yychar != YYEMPTY)
+  if (yychar != YYIMAGEEMPTY)
     {
       /* Make sure we have latest lookahead translation.  See comments at
          user semantic actions for why this is necessary.  */
@@ -1446,4 +1277,9 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 180 "interpreter_projet/parser.y"
+#line 37 "interpreter_projet/image_parser.y"
+
+
+void yyimageerror(const char *s) {
+    fprintf(stderr, "Image parse error: %s\n", s);
+}

@@ -1,0 +1,12 @@
+^$ +=beginner $^
+
+@image:logo base64
+^**
+  SGVsbG8sIFdvcmxkIQ==
+**^
+@end
+
+@code:main
+fund main() >: {
+    pull @image:logo;
+}: return null;

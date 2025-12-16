@@ -1,0 +1,5 @@
+pixie -> Greeter :> {
+    pixpix > init (:self) /> { 
+        print "Greeter package initialized!"
+    }
+} push out Greeter;
